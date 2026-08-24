@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faylo — Free PDF & Document Tools Online</title>
+<meta name="description" content="Compress, merge, split and convert PDF, Word and image files online. Free, fast, no signup needed.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Special+Elite&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#16202B;
+    --ink-2:#1E2B39;
+    --paper:#F4EFE1;
+    --paper-2:#EAE2CC;
+    --ink-text:#1B2430;
+    --cream-text:#F4EFE1;
+    --stamp-red:#C1432E;
+    --teal:#2F8F80;
+    --muted:#8B94A3;
+    --muted-dark:#5B6672;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--cream-text);
+    font-family:'Inter',sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+  .eyebrow{
+    font-family:'Special Elite',monospace;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    font-size:12px;
+    color:var(--stamp-red);
+  }
+
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(22,32,43,0.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(244,239,225,0.08);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:72px;}
+  .logo{
+    font-family:'Fraunces',serif;font-weight:700;font-size:26px;
+    letter-spacing:-.01em;display:flex;align-items:baseline;gap:2px;
+  }
+  .logo .dot{color:var(--stamp-red);}
+  .nav-links{display:flex;gap:32px;font-size:14.5px;color:var(--muted);}
+  .nav-links a:hover{color:var(--cream-text);}
+  .nav-cta{
+    background:var(--stamp-red);color:var(--paper);
+    padding:10px 20px;border-radius:4px;font-size:14px;font-weight:600;
+  }
+  .nav-mobile-hide{display:flex;}
+  @media (max-width:720px){.nav-mobile-hide{display:none;}}
+
+  .hero{padding:96px 0 80px;position:relative;overflow:hidden;}
+  .hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:56px;align-items:center;}
+  @media (max-width:900px){.hero-grid{grid-template-columns:1fr;}}
+  h1{
+    font-family:'Fraunces',serif;font-weight:600;
+    font-size:clamp(38px,5vw,58px);line-height:1.06;
+    letter-spacing:-.02em;margin:18px 0 22px;
+  }
+  h1 em{font-style:italic;color:var(--stamp-red);}
+  .hero-sub{font-size:17px;color:var(--muted);max-width:460px;margin-bottom:32px;}
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--stamp-red);color:var(--paper);
+    padding:14px 26px;border-radius:4px;font-weight:600;font-size:15px;display:inline-block;
+  }
+  .btn-ghost{
+    border:1px solid rgba(244,239,225,0.25);color:var(--cream-text);
+    padding:14px 26px;border-radius:4px;font-weight:600;font-size:15px;
+  }
+
+  .doc-card{
+    background:var(--paper);color:var(--ink-text);border-radius:6px;
+    padding:32px;position:relative;transform:rotate(-2.5deg);
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.5);
+  }
+  .doc-card::before{
+    content:"";position:absolute;inset:14px;
+    border:1px dashed rgba(27,36,48,0.18);border-radius:3px;
+  }
+  .doc-lines{margin:22px 0;}
+  .doc-line{height:9px;background:rgba(27,36,48,0.10);border-radius:2px;margin-bottom:10px;}
+  .doc-line.short{width:55%;}
+
+  .stamp{
+    position:absolute;top:-18px;right:-14px;width:112px;height:112px;
+    border:3px solid var(--stamp-red);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    transform:rotate(12deg);background:rgba(193,67,46,0.04);
+    animation:stampIn .5s cubic-bezier(.2,1.4,.4,1) .3s both;
+  }
+  .stamp::before{
+    content:"";position:absolute;inset:8px;
+    border:1px solid var(--stamp-red);border-radius:50%;
+  }
+  .stamp-text{
+    font-family:'Special Elite',monospace;color:var(--stamp-red);
+    font-size:10.5px;text-align:center;line-height:1.5;
+    letter-spacing:.05em;text-transform:uppercase;
+  }
+  @keyframes stampIn{
+    0%{opacity:0;transform:rotate(12deg) scale(1.6);}
+    100%{opacity:1;transform:rotate(12deg) scale(1);}
+  }
+
+  .doc-tag{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'JetBrains Mono',monospace;font-size:12px;
+    background:var(--paper-2);padding:5px 10px;border-radius:3px;color:var(--ink-text);
+  }
+  .doc-tag .bar{width:44px;height:5px;background:var(--teal);border-radius:3px;}
+
+  .trust{
+    border-top:1px solid rgba(244,239,225,0.08);
+    border-bottom:1px solid rgba(244,239,225,0.08);
+    padding:22px 0;
+  }
+  .trust-row{
+    display:flex;gap:40px;flex-wrap:wrap;justify-content:space-between;
+    font-size:13.5px;color:var(--muted);
+  }
+  .trust-row span{color:var(--teal);margin-right:6px;}
+
+  .section{padding:88px 0;}
+  .section-head{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    margin-bottom:44px;gap:20px;flex-wrap:wrap;
+  }
+  h2{
+    font-family:'Fraunces',serif;font-weight:600;
+    font-size:clamp(28px,3.4vw,38px);letter-spacing:-.01em;margin-top:8px;
+  }
+  .section-note{font-size:14px;color:var(--muted);max-width:280px;}
+
+  .category{margin-bottom:56px;}
+  .category-label{
+    font-family:'Special Elite',monospace;font-size:12.5px;
+    text-transform:uppercase;letter-spacing:.1em;color:var(--teal);
+    margin-bottom:16px;display:flex;align-items:center;gap:10px;
+  }
+  .category-label::after{content:"";flex:1;height:1px;background:rgba(244,239,225,0.1);}
+
+  .tool-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;
+  }
+  .tool-card{
+    background:var(--ink-2);border:1px solid rgba(244,239,225,0.08);
+    border-radius:8px;padding:22px;
+    transition:transform .18s ease, border-color .18s ease, background .18s ease;
+    position:relative;
+  }
+  .tool-card:hover{
+    transform:translateY(-3px);border-color:rgba(193,67,46,0.4);background:#212F3F;
+  }
+  .tool-icon{
+    width:38px;height:38px;border-radius:6px;
+    background:rgba(193,67,46,0.12);display:flex;align-items:center;justify-content:center;
+    margin-bottom:16px;color:var(--stamp-red);
+  }
+  .tool-name{font-weight:600;font-size:15.5px;margin-bottom:4px;}
+  .tool-desc{font-size:13px;color:var(--muted);line-height:1.45;}
+  .badge{
+    position:absolute;top:18px;right:18px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;
+    text-transform:uppercase;letter-spacing:.05em;
+    padding:3px 8px;border-radius:3px;
+    background:rgba(47,143,128,0.15);color:var(--teal);
+  }
+  .badge.soon{background:rgba(139,148,163,0.14);color:var(--muted);}
+
+  .why{
+    background:var(--paper);color:var(--ink-text);
+    border-radius:16px;padding:56px 40px;margin:0 0 20px;
+  }
+  .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin-top:36px;}
+  @media (max-width:760px){.why-grid{grid-template-columns:1fr;}}
+  .why-item .num{
+    font-family:'Special Elite',monospace;color:var(--stamp-red);
+    font-size:13px;margin-bottom:10px;display:block;
+  }
+  .why-item h3{
+    font-family:'Fraunces',serif;font-size:19px;font-weight:600;margin-bottom:8px;
+  }
+  .why-item p{font-size:14px;color:#4A5361;line-height:1.55;}
+
+  footer{border-top:1px solid rgba(244,239,225,0.08);padding:40px 0;}
+  .foot-row{
+    display:flex;justify-content:space-between;align-items:center;
+    flex-wrap:wrap;gap:16px;font-size:13px;color:var(--muted-dark);
+  }
+  .foot-logo{
+    font-family:'Fraunces',serif;font-weight:700;font-size:17px;color:var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo">Faylo<span class="dot">.</span></div>
+    <nav class="nav-links nav-mobile-hide">
+      <a href="#compress">Compress</a>
+      <a href="#convert">Convert</a>
+      <a href="#merge">Merge &amp; Split</a>
+      <a href="#images">Images</a>
+    </nav>
+    <a href="#tools" class="nav-cta">Open a tool</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">No signup · No upload limits · Free</span>
+      <h1>Your kagaz,<br><em>sorted</em> in seconds.</h1>
+      <p class="hero-sub">Compress, merge, split and convert your PDFs, Word files and images — right in your browser. Nothing leaves your device.</p>
+      <div class="hero-actions">
+        <a href="#tools" class="btn-primary">Browse all tools</a>
+        <a href="#compress" class="btn-ghost">Compress a PDF →</a>
+      </div>
+    </div>
+    <div>
+      <div class="doc-card">
+        <div class="stamp">
+          <div class="stamp-text">Faylo<br>Verified<br>✓ Done</div>
+        </div>
+        <span class="doc-tag"><span class="bar"></span> report_final.pdf</span>
+        <div class="doc-lines">
+          <div class="doc-line"></div>
+          <div class="doc-line"></div>
+          <div class="doc-line short"></div>
+        </div>
+        <span class="doc-tag" style="background:transparent;border:1px solid rgba(27,36,48,0.15);">12.4 MB → 2.1 MB</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="trust">
+  <div class="wrap trust-row">
+    <div><span>✓</span>Files processed in your browser, never stored</div>
+    <div><span>✓</span>No account or email needed</div>
+    <div><span>✓</span>Works on mobile &amp; desktop</div>
+  </div>
+</div>
+
+<section class="section" id="tools">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">The toolkit</span>
+        <h2>Everything for your documents</h2>
+      </div>
+      <p class="section-note">New tools are added regularly — this list keeps growing.</p>
+    </div>
+
+    <div class="category" id="compress">
+      <div class="category-label">PDF tools</div>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <span class="badge">Live</span>
+          <div class="tool-icon">⇩</div>
+          <div class="tool-name">Compress PDF</div>
+          <div class="tool-desc">Shrink file size while keeping quality intact.</div>
+        </div>
+        <div class="tool-card" id="merge">
+          <span class="badge soon">Coming soon</span>
+          <div class="tool-icon">⇔</div>
+          <div class="tool-name">Merge PDF</div>
+          <div class="tool-desc">Combine multiple PDFs into a single file.</div>
+        </div>
+        <div class="tool-card">
+          <span class="badge soon">Coming soon</span>
+          <div class="tool-icon">⇕</div>
+          <div class="tool-name">Split PDF</div>
+          <div class="tool-desc">Pull out pages or break a PDF apart.</div>
+        </div>
+        <div class="tool-card">
+          <span class="badge soon">Coming soon</span>
+          <div class="tool-icon">↻</div>
+          <div class="tool-name">Rotate &amp; Reorder</div>
+          <div class="tool-desc">Fix page orientation and order.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="category" id="convert">
+      <div class="category-label">Convert</div>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <span class="badge soon">Coming soon</span>
+          <div class="tool-icon">W</div>
+          <div class="tool-name">PDF to Word</div>
+          <div class="tool-desc">Turn a PDF into an editable .docx file.</div>
+        </div>
+        <div class="tool-card">
+          <span class="badge soon">Coming soon</span>
+          <div class="tool-icon">P</div>
+          <div class="tool-name">Word to PDF</div>
+          <div class="tool-desc">Export any document as a clean PDF.</div>
+        </div>
+        <div class="tool-card">
+          <span class="badge soon">Coming soon</span>
+          <div class="tool-icon">X</div>
+          <div class="tool-name">Excel to PDF</div>
+          <div class="tool-desc">Convert spreadsheets to shareable PDFs.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="category" id="images">
+      <div class="category-label">Images</div>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <span class="badge soon">Coming soon</span>
+          <div class="tool-icon">▤</div>
+          <div class="tool-name">Image to PDF</div>
+          <div class="tool-desc">Turn JPG or PNG photos into a PDF.</div>
+        </div>
+        <div class="tool-card">
+          <span class="badge soon">Coming soon</span>
+          <div class="tool-icon">▥</div>
+          <div class="tool-name">PDF to Image</div>
+          <div class="tool-desc">Export PDF pages as JPG or PNG.</div>
+        </div>
+        <div class="tool-card">
+          <span class="badge soon">Coming soon</span>
+          <div class="tool-icon">⇩</div>
+          <div class="tool-name">Compress Image</div>
+          <div class="tool-desc">Reduce photo size without losing detail.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="wrap">
+    <div class="why">
+      <span class="eyebrow">Why Faylo</span>
+      <h2>Built to be quick, not clever</h2>
+      <div class="why-grid">
+        <div class="why-item">
+          <span class="num">01</span>
+          <h3>Nothing leaves your device</h3>
+          <p>Most tools run right in your browser — your files aren't uploaded to a server.</p>
+        </div>
+        <div class="why-item">
+          <span class="num">02</span>
+          <h3>No signup wall</h3>
+          <p>Open a tool and use it. No account, no email, no watermark.</p>
+        </div>
+        <div class="why-item">
+          <span class="num">03</span>
+          <h3>Free, always</h3>
+          <p>Core tools stay free. We keep the lights on with a few ads, not paywalls.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-row">
+    <div class="foot-logo">Faylo</div>
+    <div>Free PDF &amp; document tools online</div>
+    <div>© 2026 Faylo</div>
+  </div>
+</footer>
+
+</body>
+</html>
